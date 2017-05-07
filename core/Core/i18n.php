@@ -43,10 +43,33 @@ class                                   i18n {
                     Conf::set('lang', $_GET['lang']);
                     Session::set('lang', $_GET['lang']);
                 } else {
-                    var_dump($_SERVER['HTTP_ACCEPT_LANGUAGE']);
-                    die();
+                    $lang = self::findBestLanguage($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+                    Conf::set('lang', $_GET['lang']);
+                    Session::set('lang', $_GET['lang']);
                 }
             }
         }
+    }
+
+    /**
+     * Choose the best suitable language for user, according to browser parameters
+     *
+     * @param string $langs             $_SERVER['HTTP_ACCEPT_LANGUAGE']
+     * @return string                   Best language
+     */
+    public static function              findBestLanguage($langs) {
+        $langs = explode(',', $langs);
+        foreach ($langs as $lang) {
+            $lang = str_replace('-', '_', explode(';', $lang)[0]);
+            if (in_array($lang, self::$acceptedLanguages))
+                return $lang;
+            $small = strtolower(explode('_', $lang)[0]);
+            foreach (self::$acceptedLanguages as $l) {
+                if (strtolower(explode('_', $l)[0]) == $small)
+                    return $l;
+            }
+        }
+        return self::$defaultLanguage;
+
     }
 }
