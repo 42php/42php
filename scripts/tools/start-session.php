@@ -7,3 +7,5 @@
  */
 
 session_start();
+
+\Core\Session::init();
