@@ -28,7 +28,7 @@ trait                           StaticDotAccessor {
      * @return mixed                Returned value
      */
     public static function 		get($var, $default = false, $expect = null, $forceData = false) {
-        if (is_string($expect) && !in_array(substr($expect, 0, 1), ['/', '#']))
+        if (is_scalar($expect) && !in_array(substr($expect, 0, 1), ['/', '#']))
             $expect = '/'.preg_quote($expect, '/').'/';
         if ($var == '')
             return $default;
@@ -106,7 +106,7 @@ trait                           StaticDotAccessor {
     public static function 		set($k, $v) {
         $k = explode('.', $k);
         self::$__data = self::recursiveSet($k, $v, self::$__data);
-        if (method_exists(self, 'onSave'))
+        if (method_exists(get_called_class(), 'onSave'))
             self::onSave();
     }
 
@@ -141,7 +141,7 @@ trait                           StaticDotAccessor {
     public static function 		append($k, $v) {
         $k = explode('.', $k);
         self::$__data = self::recursiveAppend($k, $v, self::$__data);
-        if (method_exists(self, 'onSave'))
+        if (method_exists(get_called_class(), 'onSave'))
             self::onSave();
     }
 
@@ -172,7 +172,7 @@ trait                           StaticDotAccessor {
     public static function 		remove($k) {
         $k = explode('.', $k);
         self::$__data = self::recursiveRemove($k, self::$__data);
-        if (method_exists(self, 'onSave'))
+        if (method_exists(get_called_class(), 'onSave'))
             self::onSave(self::$__data);
     }
 

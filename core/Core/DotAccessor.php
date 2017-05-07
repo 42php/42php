@@ -28,7 +28,7 @@ trait                           DotAccessor {
      * @return mixed                Returned value
      */
     public function 	    	get($var, $default = false, $expect = null, $forceData = false) {
-        if (is_string($expect) && !in_array(substr($expect, 0, 1), ['/', '#']))
+        if (is_scalar($expect) && !in_array(substr($expect, 0, 1), ['/', '#']))
             $expect = '/'.preg_quote($expect, '/').'/';
         if ($var == '')
             return $default;
