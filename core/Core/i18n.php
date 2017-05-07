@@ -43,7 +43,9 @@ class                                   i18n {
                     Conf::set('lang', $_GET['lang']);
                     Session::set('lang', $_GET['lang']);
                 } else {
-                    $lang = self::findBestLanguage($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+                    $lang = self::findBestLanguage(
+                        isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : self::$defaultLanguage
+                    );
                     Conf::set('lang', $lang);
                     Session::set('lang', $lang);
                 }
