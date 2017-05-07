@@ -8,14 +8,23 @@
 
 namespace                       Core;
 
-
+/**
+ * Class Session
+ * @package Core
+ */
 class                           Session {
     use                         StaticDotAccessor;
 
+    /**
+     * Initialize the session.
+     */
     public static function      init() {
         self::$__data = $_SESSION;
     }
 
+    /**
+     * On every local change, we save the data in the session.
+     */
     public static function      onChange() {
         $_SESSION = self::$__data;
     }
