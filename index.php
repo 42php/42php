@@ -6,3 +6,4 @@
  * @copyright   2015-2017 42php
  */
 
+require_once 'scripts/init.php';
