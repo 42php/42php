@@ -106,8 +106,8 @@ trait                           StaticDotAccessor {
     public static function 		set($k, $v) {
         $k = explode('.', $k);
         self::$__data = self::recursiveSet($k, $v, self::$__data);
-        if (method_exists(get_called_class(), 'onSave'))
-            self::onSave();
+        if (method_exists(get_called_class(), 'onChange'))
+            self::onChange();
     }
 
     /**
@@ -141,8 +141,8 @@ trait                           StaticDotAccessor {
     public static function 		append($k, $v) {
         $k = explode('.', $k);
         self::$__data = self::recursiveAppend($k, $v, self::$__data);
-        if (method_exists(get_called_class(), 'onSave'))
-            self::onSave();
+        if (method_exists(get_called_class(), 'onChange'))
+            self::onChange();
     }
 
     /**
@@ -172,8 +172,8 @@ trait                           StaticDotAccessor {
     public static function 		remove($k) {
         $k = explode('.', $k);
         self::$__data = self::recursiveRemove($k, self::$__data);
-        if (method_exists(get_called_class(), 'onSave'))
-            self::onSave(self::$__data);
+        if (method_exists(get_called_class(), 'onChange'))
+            self::onChange(self::$__data);
     }
 
     /**

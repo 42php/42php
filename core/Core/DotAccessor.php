@@ -106,8 +106,8 @@ trait                           DotAccessor {
     public function 	    	set($k, $v) {
         $k = explode('.', $k);
         $this->__data = $this->recursiveSet($k, $v, $this->__data);
-        if (method_exists($this, 'onSave'))
-            $this->onSave();
+        if (method_exists($this, 'onChange'))
+            $this->onChange();
     }
 
     /**
@@ -141,8 +141,8 @@ trait                           DotAccessor {
     public function 	    	append($k, $v) {
         $k = explode('.', $k);
         $this->__data = $this->recursiveAppend($k, $v, $this->__data);
-        if (method_exists($this, 'onSave'))
-            $this->onSave();
+        if (method_exists($this, 'onChange'))
+            $this->onChange();
     }
 
     /**
@@ -172,8 +172,8 @@ trait                           DotAccessor {
     public function 	    	remove($k) {
         $k = explode('.', $k);
         $this->__data = $this->recursiveRemove($k, $this->__data);
-        if (method_exists($this, 'onSave'))
-            $this->onSave($this->__data);
+        if (method_exists($this, 'onChange'))
+            $this->onChange($this->__data);
     }
 
     /**
