@@ -2,10 +2,10 @@
   "debug": true,
   "i18n": {
     "languages": [
-      "fr-FR",
-      "en-US"
+      "fr_FR",
+      "en_US"
     ],
-    "default": "fr-FR",
+    "default": "fr_FR",
     "source": {
       "prefer": "route"
     }
