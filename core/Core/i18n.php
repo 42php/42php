@@ -72,6 +72,5 @@ class                                   i18n {
             }
         }
         return self::$defaultLanguage;
-
     }
 }
