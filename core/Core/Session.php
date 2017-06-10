@@ -42,4 +42,8 @@ class                           Session {
             session_id($newId);
         return session_id();
     }
+
+    public static function      destroy() {
+        session_regenerate_id(true);
+    }
 }
