@@ -28,4 +28,12 @@ class                           Session {
     public static function      onChange() {
         $_SESSION = self::$__data;
     }
+
+    /**
+     * Saves the session content
+     */
+    public static function      save() {
+        session_write_close();
+        session_start();
+    }
 }
