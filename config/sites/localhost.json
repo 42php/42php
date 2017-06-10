@@ -14,5 +14,32 @@
       "en_US"
     ],
     "default": "fr_FR"
-  }
+  },
+  "database": {
+    "type": "PDO",
+    "config": {
+      "dsn": "mysql:host=localhost;dbname=42php",
+      "user": "root",
+      "pass": ""
+    }
+  },
+  "payment": {
+    "aLabel": {
+      "driver": "MangoPay",
+      "config": {
+        "apikey": "testtest"
+      }
+    }
+  },
+  "mail": [
+    {
+      "driver": "Sendinblue",
+      "config": {
+        "apikey": "testtest"
+      }
+    },
+    {
+      "driver": "System"
+    }
+  ]
 }
