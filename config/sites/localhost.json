@@ -1,5 +1,6 @@
 {
   "name": "Localhost",
+  "slug": "localhost",
   "domain": {
     "main": "42php.lan",
     "alias": [

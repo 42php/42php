@@ -6,7 +6,7 @@
  * @copyright   2015-2017 42php
  */
 
-if (\Core\Conf::get('debug', false)) {
+if (\Core\Site::get('debug', false)) {
     ini_set('display_errors',1);
     ini_set('display_startup_errors',1);
 } else {
