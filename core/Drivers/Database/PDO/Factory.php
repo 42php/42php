@@ -1,44 +1,40 @@
 <?php
 /**
- * LICENSE: This source file is subject to version 3.0 of the GPL license
- * that is available through the world-wide-web at the following URI:
- * https://www.gnu.org/licenses/gpl-3.0.fr.html (french version).
- *
  * @author      Guillaume Gagnaire <contact@42php.com>
  * @link        https://www.github.com/42php/42php
- * @license     https://www.gnu.org/licenses/gpl-3.0.fr.html GPL
+ * @license     https://opensource.org/licenses/mit-license.html MIT
+ * @copyright   2015-2017 42php
  */
 
 namespace                       Drivers\Database\PDO;
 
 /**
- * Gère la connexion à une base de données SQL via PDO
+ * Handle DB connection with PDO
  *
  * Class Factory
  * @package Drivers\Database\PDO
  */
 class                           Factory implements \Drivers\Database\Factory {
     /**
-     * @var null|Factory $singleton Contient une instance singleton de la factory
+     * @var null|Factory $singleton Singleton instance
      */
     private static              $singleton = null;
 
     /**
-     * Retourne une instance singleton
+     * Gets the singleton instance
      *
      * @return bool|Factory
      */
     public static function      getInstance() {
-        \Core\Debug::trace();
         if (is_null(self::$singleton)) {
             try {
                 $pdo = new \PDO(
-                    \Core\Conf::get('database.config.dsn', 'mysql:host=localhost;dbname=42php'),
-                    \Core\Conf::get('database.config.user', 'root'),
-                    \Core\Conf::get('database.config.pass', '')
+                    \Core\Site::get('database.config.dsn', 'mysql:host=localhost;dbname=42php'),
+                    \Core\Site::get('database.config.user', 'root'),
+                    \Core\Site::get('database.config.pass', '')
                 );
                 $pdo->exec("SET character_set_results = 'utf8', character_set_client = 'utf8', character_set_connection = 'utf8', character_set_database = 'utf8', character_set_server = 'utf8'");
-                self::$singleton = new self($pdo);
+                self::$singleton = new self($pdo, \Core\Site::get('database.config.prefix', ''));
             } catch (\PDOException $e) {
                 echo "PDO: " . $e->getMessage() . "\n";
                 return false;
@@ -48,123 +44,123 @@ class                           Factory implements \Drivers\Database\Factory {
     }
 
     /**
-     * @var null|\PDO           Contient l'objet PDO
+     * @var null|\PDO           PDO object
      */
     private                     $pdo = null;
 
     /**
+     * @var string $prefix      Prefix for all the tables
+     */
+    private                     $prefix = '';
+
+    /**
      * Factory constructor.
      * @param \PDO $pdo
+     * @param string $prefix
      */
-    public function             __construct(\PDO $pdo) {
+    public function             __construct(\PDO $pdo, $prefix = '') {
         $this->pdo = $pdo;
+        $this->prefix = $prefix;
     }
 
     /**
-     * Déconnecte PDO
+     * Logout PDO
      */
     public function             close() {
-        \Core\Debug::trace();
         $this->pdo = null;
         self::$singleton = null;
     }
 
     /**
-     * Retourne une table
+     * Get a collection
      *
-     * @param string $k     Nom de la table
+     * @param string $k         Collection name
      * @return Collection
      */
     public function             __get($k) {
-        \Core\Debug::trace();
-        return new Collection($k, $this, $this->pdo);
+        return new Collection($this->prefix . $k, $this, $this->pdo);
     }
 
     /**
-     * Appelle PDO::quote()
+     * Calls PDO::quote()
      *
-     * @param string $value     Valeur
-     * @return string           Valeur filtrée
+     * @param string $value     Value
+     * @return string           Filtered value
      */
     public function             quote($value) {
-        \Core\Debug::trace();
         try {
             return $this->pdo->quote($value);
         } catch (\PDOException $e) {
-            if (Conf::get('debug', false))
+            if (\Core\Site::get('debug', false))
                 echo "PDO: SQL error: " . $e->getMessage() . "\n";
             return false;
         }
     }
 
     /**
-     * Appelle PDO::exec()
+     * Calls PDO::exec()
      *
-     * @param string $query     Requête SQL
-     * @return int              Nombre de résultats affectés
+     * @param string $query     SQL query
+     * @return int              Number of affected results
      */
     public function             exec($query) {
-        \Core\Debug::trace();
         try {
             return $this->pdo->exec($query);
         } catch (\PDOException $e) {
-            if (Conf::get('debug', false))
+            if (\Core\Site::get('debug', false))
                 echo "PDO: SQL error: " . $e->getMessage() . "\n";
             return false;
         }
     }
 
     /**
-     * Appelle PDO::query() et retourne l'ensemble des résultats
+     * Calls PDO::query() and returns all results
      *
-     * @param string $query     Requête SQL
-     * @return array|bool       L'ensemble des résultats ou FALSE
+     * @param string $query     SQL query
+     * @return array|bool       All the results or FALSE if an error occured
      */
     public function             query($query) {
-        \Core\Debug::trace();
         try {
             $ret = $this->pdo->query($query);
             if (!$ret)
                 return false;
             return $ret->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
-            if (Conf::get('debug', false))
+            if (\Core\Site::get('debug', false))
                 echo "PDO: SQL error: " . $e->getMessage() . "\n";
             return false;
         }
     }
 
     /**
-     * Appelle PDO::query() et retourne le premier résultat
+     * Calls PDO::query() and returns the first result
      *
-     * @param string $query     Requête SQL
-     * @return mixed            Le résultat sous la forme d'un tableau ou FALSE
+     * @param string $query     SQL query
+     * @return mixed            The result or FALSE
      */
     public function             get($query) {
-        \Core\Debug::trace();
         try {
             $ret = $this->pdo->query($query);
             if (!$ret)
                 return false;
             return $ret->fetch(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
-            if (Conf::get('debug', false))
+            if (\Core\Site::get('debug', false))
                 echo "PDO: SQL error: " . $e->getMessage() . "\n";
             return false;
         }
     }
 
     /**
-     * Retourne l'identifiant unique du dernier document inséré
+     * Return the last inserted ID
      *
-     * @return string           Dernier identifiant inséré
+     * @return string           Last inserted ID
      */
     public function             lastId() {
-        \Core\Debug::trace();
         try {
             return $this->pdo->lastInsertId();
         } catch (\PDOException $e) {
-            if (Conf::get('debug', false))
+            if (\Core\Site::get('debug', false))
                 echo "PDO: SQL error: " . $e->getMessage() . "\n";
             return false;
         }

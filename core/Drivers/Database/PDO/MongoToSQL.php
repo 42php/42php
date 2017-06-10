@@ -1,36 +1,32 @@
 <?php
 /**
- * LICENSE: This source file is subject to version 3.0 of the GPL license
- * that is available through the world-wide-web at the following URI:
- * https://www.gnu.org/licenses/gpl-3.0.fr.html (french version).
- *
  * @author      Guillaume Gagnaire <contact@42php.com>
  * @link        https://www.github.com/42php/42php
- * @license     https://www.gnu.org/licenses/gpl-3.0.fr.html GPL
+ * @license     https://opensource.org/licenses/mit-license.html MIT
+ * @copyright   2015-2017 42php
  */
 
 namespace                           Drivers\Database\PDO;
 
 /**
- * Permet de traduire une requête MongoDB en SQL
+ * Translates a mongodb style query into SQL
  *
  * Class MongoToSQL
  * @package Drivers\Database\PDO
  */
 class                               MongoToSQL {
     /**
-     * Traduit une requête SELECT
+     * Translates a SELECT query
      *
-     * @param string $table         Nom de la table
-     * @param array $query          Requête MongoDB
-     * @param array $fields         Liste des champs à retourner, si vide, "*"
-     * @param array $sort           Champs de tri
-     * @param bool $skip            Nombre de résultats à passer
-     * @param bool $limit           Nombre de résultats à retourner
-     * @return string               Requête SQL
+     * @param string $table         Table name
+     * @param array $query          MongoDB query
+     * @param array $fields         List of returned fields
+     * @param array $sort           Sort fields
+     * @param bool $skip            Number of results to skip
+     * @param bool $limit           Max number of results
+     * @return string               SQL query
      */
     public static function          select($table, $query = [], $fields = [], $sort = [], $skip = false, $limit = false) {
-        \Core\Debug::trace();
         if (!$fields)
             $fields = [];
         $sql = 'SELECT ' . (sizeof($fields) ? '`'.implode('`, `', $fields).'`' : '*') . ' FROM `' . $table . '` ';
@@ -49,15 +45,14 @@ class                               MongoToSQL {
     }
 
     /**
-     * Traduit une requête INSERT INTO
+     * Translates a INSERT query
      *
-     * @param string $table         Nom de la table
-     * @param array $data           Données à insérer. Passer un tableau multi-dimensionnel pour une insertion batch
-     * @param bool $multiple        Détermine si les données sont à insérer en batch
-     * @return bool|string          Requête SQL
+     * @param string $table         Table name
+     * @param array $data           Data to insert. Pass a multi-dimensionnal array to batch insert
+     * @param bool $multiple        Determine if multiple sets of data are passed
+     * @return bool|string          SQL query
      */
     public static function          insert($table, $data = [], $multiple = false) {
-        \Core\Debug::trace();
         if (!sizeof($data))
             return false;
         if (!$multiple)
@@ -87,16 +82,15 @@ class                               MongoToSQL {
     }
 
     /**
-     * Traduit une requête UPDATE
+     * Translates an UPDATE query
      *
-     * @param string $table         Nom de la table
-     * @param array $values         Valeurs à modifier
-     * @param array $query          Requête MongoDB
-     * @param bool $limit           Nombre de résultats à modifier au maximum
-     * @return bool|string          Requête SQL
+     * @param string $table         Table name
+     * @param array $values         Values to update
+     * @param array $query          MongoDB query
+     * @param bool $limit           Limit of documents to update
+     * @return bool|string          SQL query
      */
     public static function          update($table, $values = [], $query = [], $limit = false) {
-        \Core\Debug::trace();
         if (!sizeof($values))
             return false;
 
@@ -151,15 +145,14 @@ class                               MongoToSQL {
     }
 
     /**
-     * Traduit une requête DELETE FROM
+     * Translates a DELETE query
      *
-     * @param string $table         Nom de la table
-     * @param array $query          Requête MongoDB
-     * @param bool $limit           Nombre de résultats à supprimer au maximum
-     * @return string               Requête SQL
+     * @param string $table         Table name
+     * @param array $query          MongoDB query
+     * @param bool $limit           Number of documents to delete
+     * @return string               SQL query
      */
     public static function          delete($table, $query = [], $limit = false) {
-        \Core\Debug::trace();
         $sql = 'DELETE FROM `' . $table . '` ';
         if (sizeof($query))
             $sql .= 'WHERE ' . self::where($query) . ' ';
@@ -169,12 +162,12 @@ class                               MongoToSQL {
     }
 
     /**
-     * Traduit un champ WHERE
+     * Translates a WHERE field
      *
-     * @param array $query          Requête MongoDB
-     * @param string $join          Jointure
-     * @param string $parent        Champ parent
-     * @return string               Champ WHERE
+     * @param array $query          MongoDB query
+     * @param string $join          Glue
+     * @param string $parent        Parent field
+     * @return string               WHERE query
      */
     public static function          where($query = [], $join = ' AND ', $parent = '') {
         $str = [];
@@ -237,13 +230,12 @@ class                               MongoToSQL {
     }
 
     /**
-     * Traduit un champ ORDER BY
+     * Translates an ORDER BY query
      *
-     * @param array $sort           Champs de tri
-     * @return string               Champ ORDER BY
+     * @param array $sort           Sort fields
+     * @return string               ORDER query
      */
     public static function          sort($sort = []) {
-        \Core\Debug::trace();
         $sql = [];
         foreach ($sort as $k => $v) {
             $sql[] = '`' . $k . '` ' . ($v ? 'ASC' : 'DESC');
@@ -252,13 +244,12 @@ class                               MongoToSQL {
     }
 
     /**
-     * Traite un champ avant son retour de la DB
+     * Updates data coming from DB
      *
-     * @param string $data          Chaîne de caractère
-     * @return array|string|object  Chaîne traitée
+     * @param string $data          String
+     * @return array|string|object  Data
      */
     public static function      fromDb($data) {
-        \Core\Debug::trace();
         if (substr($data, 0, 20) == '42php.db.json.array:') {
             return json_decode(substr($data, 20), true);
         }
@@ -268,13 +259,12 @@ class                               MongoToSQL {
     }
 
     /**
-     * Traite un champ avant son import en base
+     * Updates data before inserting in DB
      *
-     * @param mixed $data       Valeur
-     * @return string           Résultat
+     * @param mixed $data       Value
+     * @return string           Result
      */
     public static function      toDb($data) {
-        \Core\Debug::trace();
         if (is_array($data))
             $data = '42php.db.json.array:'.json_encode($data);
         if (is_object($data))

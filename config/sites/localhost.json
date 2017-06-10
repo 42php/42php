@@ -20,7 +20,8 @@
     "config": {
       "dsn": "mysql:host=localhost;dbname=42php",
       "user": "root",
-      "pass": ""
+      "pass": "",
+      "prefix": ""
     }
   },
   "payment": {

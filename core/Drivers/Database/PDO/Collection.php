@@ -1,12 +1,9 @@
 <?php
 /**
- * LICENSE: This source file is subject to version 3.0 of the GPL license
- * that is available through the world-wide-web at the following URI:
- * https://www.gnu.org/licenses/gpl-3.0.fr.html (french version).
- *
  * @author      Guillaume Gagnaire <contact@42php.com>
  * @link        https://www.github.com/42php/42php
- * @license     https://www.gnu.org/licenses/gpl-3.0.fr.html GPL
+ * @license     https://opensource.org/licenses/mit-license.html MIT
+ * @copyright   2015-2017 42php
  */
 
 namespace                       Drivers\Database\PDO;
@@ -17,26 +14,26 @@ namespace                       Drivers\Database\PDO;
  */
 class                           Collection implements \Drivers\Database\Collection {
     /**
-     * @var null|\PDO           Contient l'objet PDO
+     * @var null|\PDO           PDO object
      */
     private                     $pdo = null;
 
     /**
-     * @var Factory|null        La factory
+     * @var Factory|null        Factory
      */
     private                     $handler = null;
 
     /**
-     * @var string $table       Nom de la table
+     * @var string $table       Table name
      */
     private                     $table = '';
 
     /**
      * Collection constructor.
      *
-     * @param string $tableName Nom de la table
+     * @param string $tableName Table name
      * @param Factory $handler  Handler
-     * @param \PDO $pdo         Objet PDO
+     * @param \PDO $pdo         PDO object
      */
     public function             __construct($tableName, $handler, $pdo) {
         $this->pdo = $pdo;
@@ -45,13 +42,12 @@ class                           Collection implements \Drivers\Database\Collecti
     }
 
     /**
-     * Insère un document en base de données
+     * Insert a document into database
      *
-     * @param array $data       Document à insérer
-     * @return string           ID du document inséré
+     * @param array $data       Document to insert
+     * @return string           Inserted document ID
      */
     public function             insert(&$data) {
-        \Core\Debug::trace();
         $query = MongoToSQL::insert($this->table, $data);
         $this->handler->exec($query);
         $data['id'] = $this->handler->lastId();
@@ -59,15 +55,14 @@ class                           Collection implements \Drivers\Database\Collecti
     }
 
     /**
-     * Met à jour un ou plusieurs documents
+     * Update documents
      *
-     * @param array $clause     Clauses de recherche
-     * @param array $data       Champs à modifier
-     * @param array $options    Options de modification
-     * @return mixed            Nombre de documents modifiés
+     * @param array $clause     Query
+     * @param array $data       Update
+     * @param array $options    Update options
+     * @return mixed            Number of affected documents
      */
     public function             update($clause = [], $data = [], $options = []) {
-        \Core\Debug::trace();
         $limit = 1;
         if (isset($option['multiple']) && $option['multiple'])
             $limit = false;
@@ -76,13 +71,12 @@ class                           Collection implements \Drivers\Database\Collecti
     }
 
     /**
-     * Sauvegarde un document (effectue un upsert)
+     * Upserts a document
      *
-     * @param array $data       Document à enregistrer
-     * @return mixed            Identifiant du document
+     * @param array $data       Document to save
+     * @return mixed            Document ID
      */
     public function             save(&$data) {
-        \Core\Debug::trace();
         if (isset($data['id'])) {
             $d = $data;
             unset($d['id']);
@@ -98,17 +92,16 @@ class                           Collection implements \Drivers\Database\Collecti
     }
 
     /**
-     * Trouve une liste de documents
+     * Find a list of documents
      *
-     * @param array $clause     Clause de recherche
-     * @param array $fields     Champs à retourner
-     * @param array $sort       Champs de tris
-     * @param bool|int $skip    Nombre de documents à ignorer
-     * @param bool|int $limit   Nombre de documents à retourner
-     * @return array|bool       Liste des documents
+     * @param array $clause     Query
+     * @param array $fields     Fields to return
+     * @param array $sort       Sort
+     * @param bool|int $skip    Number of documents to skip
+     * @param bool|int $limit   Number of documents to return
+     * @return array|bool       List
      */
     public function             find($clause = [], $fields = [], $sort = [], $skip = false, $limit = false) {
-        \Core\Debug::trace();
         $query = MongoToSQL::select($this->table, $clause, $fields, $sort, $skip, $limit);
         $ret = $this->handler->query($query);
         if (!$ret)
@@ -120,14 +113,13 @@ class                           Collection implements \Drivers\Database\Collecti
     }
 
     /**
-     * Trouve un document
+     * Finds a document
      *
-     * @param array $clause     Clause de recherche
-     * @param array $fields     Champs à retourner
-     * @return mixed            Premier document trouvé
+     * @param array $clause     Query
+     * @param array $fields     Fields to return
+     * @return mixed            First found document
      */
     public function             findOne($clause = [], $fields = []) {
-        \Core\Debug::trace();
         $ret = $this->find($clause, $fields, [], false, 1);
         if ($ret && sizeof($ret)) {
             return $ret[0];
@@ -136,14 +128,13 @@ class                           Collection implements \Drivers\Database\Collecti
     }
 
     /**
-     * Supprime un ou plusieurs documents
+     * Delete documents
      *
-     * @param array $clause     Clause de recherche
-     * @param array $options    Options de suppression
-     * @return int              Nombre de documents supprimés
+     * @param array $clause     Query
+     * @param array $options    Deletion options
+     * @return int              Number of deleted documents
      */
     public function             remove($clause = [], $options = []) {
-        \Core\Debug::trace();
         $limit = false;
         if (isset($options['justOne']) && $options['justOne'])
             $limit = 1;
