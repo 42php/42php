@@ -36,4 +36,10 @@ class                           Session {
         session_write_close();
         session_start();
     }
+
+    public static function      id($newId = false) {
+        if ($newId !== false)
+            session_id($newId);
+        return session_id();
+    }
 }

@@ -6,6 +6,14 @@
  * @copyright   2015-2017 42php
  */
 
+use Core\Http;
+use Core\Session;
+
+$headers = Http::headers();
+
+if (isset($headers['X-Token']))
+    Session::id($headers['X-Token']);
+
 session_start();
 
-\Core\Session::init();
+Session::init();
