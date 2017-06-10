@@ -9,16 +9,16 @@
 namespace                           Core;
 
 /**
- * Gère les requêtes sur la base de données
+ * Handles DB queries
  *
  * Class Db
  * @package Core
  */
 class                               Db {
     /**
-     * Appelle la Factory du driver configuré. (\Drivers\Database\nomDuDriver\Factory::getInstance())
+     * Calls the Factory of the configured driver. (\Drivers\Database\nomDuDriver\Factory::getInstance())
      *
-     * @return mixed                L'instance de base de données
+     * @return mixed                The DB instance
      */
     public static function          getInstance() {
         $factory = '\Drivers\Database\\'. Conf::get('database.type', 'PDO') .'\\Factory';
@@ -28,11 +28,11 @@ class                               Db {
     }
 
     /**
-     * Formatte une date pour le driver configuré
+     * Format a date, with ou without time.
      *
      * @param bool|int $timestamp   Timestamp
-     * @param bool $withTime        Inclure le temps
-     * @return mixed                La date formattée
+     * @param bool $withTime        Include time
+     * @return mixed                Formatted date
      */
     public static function          date($timestamp = false, $withTime = true) {
         $factory = '\Drivers\Database\\'. Conf::get('database.type', 'PDO') .'\\Date';
@@ -42,10 +42,10 @@ class                               Db {
     }
 
     /**
-     * Formatte un identifiant de document pour le driver configuré
+     * Format the document ID
      *
-     * @param mixed $id             Identifiant du document
-     * @return mixed                L'identifiant formatté
+     * @param mixed $id             Document ID
+     * @return mixed                Formatted ID
      */
     public static function          id($id = false) {
         $factory = '\Drivers\Database\\'. Conf::get('database.type', 'PDO') .'\\Id';
@@ -55,10 +55,10 @@ class                               Db {
     }
 
     /**
-     * Formatte une expression régulière pour le driver configuré
+     * Format a regular expression
      *
-     * @param string $regex     L'expression régulière
-     * @return mixed            L'expression régulière formattée
+     * @param string $regex     Regexp
+     * @return mixed            Formatted Regexp
      */
     public static function          regex($regex) {
         $factory = '\Drivers\Database\\'. Conf::get('database.type', 'PDO') .'\\Regex';
