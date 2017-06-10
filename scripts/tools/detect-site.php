@@ -6,15 +6,17 @@
  * @copyright   2015-2017 42php
  */
 
+use Core\Site;
+use Core\Http;
+
 $domains = json_decode(
     file_get_contents(ROOT . '/config/domains.json'),
     true
 );
 
 if (!isset($domains[$_SERVER['SERVER_NAME']])) {
-    http_response_code(421);
-    header('HTTP/1.0 421 Bad mapping');
+    Http::responseCode(421);
     die();
 }
 
-\Core\Site::load(ROOT . '/config/sites/' . $domains[$_SERVER['SERVER_NAME']] . '.json');
+Site::load(ROOT . '/config/sites/' . $domains[$_SERVER['SERVER_NAME']] . '.json');
