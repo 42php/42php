@@ -21,7 +21,7 @@ class                               Db {
      * @return mixed                The DB instance
      */
     public static function          getInstance() {
-        $factory = '\Drivers\Database\\'. Conf::get('database.type', 'PDO') .'\\Factory';
+        $factory = '\Drivers\Database\\'. Site::get('database.type', 'PDO') .'\\Factory';
         if (class_exists($factory))
             return $factory::getInstance();
         return false;
@@ -35,7 +35,7 @@ class                               Db {
      * @return mixed                Formatted date
      */
     public static function          date($timestamp = false, $withTime = true) {
-        $factory = '\Drivers\Database\\'. Conf::get('database.type', 'PDO') .'\\Date';
+        $factory = '\Drivers\Database\\'. Site::get('database.type', 'PDO') .'\\Date';
         if (class_exists($factory))
             return $factory::format($timestamp === false ? time() : $timestamp, $withTime);
         return false;
@@ -48,7 +48,7 @@ class                               Db {
      * @return mixed                Formatted ID
      */
     public static function          id($id = false) {
-        $factory = '\Drivers\Database\\'. Conf::get('database.type', 'PDO') .'\\Id';
+        $factory = '\Drivers\Database\\'. Site::get('database.type', 'PDO') .'\\Id';
         if (class_exists($factory))
             return $factory::format($id);
         return false;
@@ -61,7 +61,7 @@ class                               Db {
      * @return mixed            Formatted Regexp
      */
     public static function          regex($regex) {
-        $factory = '\Drivers\Database\\'. Conf::get('database.type', 'PDO') .'\\Regex';
+        $factory = '\Drivers\Database\\'. Site::get('database.type', 'PDO') .'\\Regex';
         if (class_exists($factory))
             return $factory::format($regex);
         return false;
