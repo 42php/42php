@@ -1,13 +1,3 @@
 {
-  "debug": true,
-  "i18n": {
-    "languages": [
-      "fr_FR",
-      "en_US"
-    ],
-    "default": "fr_FR",
-    "source": {
-      "prefer": "route"
-    }
-  }
+
 }
