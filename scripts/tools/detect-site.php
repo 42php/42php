@@ -6,6 +6,7 @@
  * @copyright   2015-2017 42php
  */
 
+use Core\Redirect;
 use Core\Site;
 use Core\Http;
 
@@ -20,3 +21,10 @@ if (!isset($domains[$_SERVER['SERVER_NAME']])) {
 }
 
 Site::load(ROOT . '/config/sites/' . $domains[$_SERVER['SERVER_NAME']] . '.json');
+
+if ($_SERVER['SERVER_NAME'] != Site::get('domain.main')) {
+    $url = Http::baseUrl();
+    $url = str_replace($_SERVER['SERVER_NAME'], Site::get('domain.main'), $url);
+    $url .= $_SERVER['REQUEST_URI'];
+    Redirect::permanent($url);
+}
