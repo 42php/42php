@@ -12,5 +12,19 @@
       "fr_FR": "/deconnexion",
       "en_US": "/logout"
     }
+  },
+  "resetPassword": {
+    "controller": "AuthController@resetPassword",
+    "routes": {
+      "fr_FR": "/mot-de-passe-oublie",
+      "en_US": "/reset-password"
+    }
+  },
+  "register": {
+    "controller": "AuthController@register",
+    "routes": {
+      "fr_FR": "/inscription",
+      "en_US": "/register"
+    }
   }
 }
