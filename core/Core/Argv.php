@@ -101,29 +101,28 @@ class 							Argv {
             $url = '/'.implode('/', $argv).'/';
         $offset = -1;
         $toReturn = false;
-        $lang = Conf::get('lang');
 
         foreach ($routes as $name => $r) {
-            if (!isset($r['routes'][$lang]))
-                continue;
-            $route = $r['routes'][$lang];
-            if (substr($route, -1) != '/')
-                $route .= '/';
-            $res = self::routeMatch($url, $route);
-            if ($res['match']) {
-                $potentialOffset = sizeof(self::parse($route)) - $res['offset'];
-                if ($potentialOffset > $offset) {
-                    $offset = $potentialOffset;
-                    $toReturn = [
-                        $fieldToReturn => $r[$fieldToReturn],
-                        'params' => $res['params'],
-                        'route' => array(
+            foreach ($r['routes'] as $lang => $route) {
+                if (substr($route, -1) != '/')
+                    $route .= '/';
+                $res = self::routeMatch($url, $route);
+                if ($res['match']) {
+                    $potentialOffset = sizeof(self::parse($route)) - $res['offset'];
+                    if ($potentialOffset > $offset) {
+                        $offset = $potentialOffset;
+                        $toReturn = [
+                            $fieldToReturn => $r[$fieldToReturn],
                             'params' => $res['params'],
-                            'name' => $name
-                        ),
-                        'offset' => $offset,
-                        'conf' => $r
-                    ];
+                            'route' => array(
+                                'params' => $res['params'],
+                                'name' => $name
+                            ),
+                            'offset' => $offset,
+                            'conf' => $r,
+                            'lang' => $lang
+                        ];
+                    }
                 }
             }
         }
@@ -142,7 +141,7 @@ class 							Argv {
     public static function 		createUrl($name, $params = [], $lang = false) {
         if (!$lang)
             $lang = Conf::get('lang');
-        $routes = json_decode(file_get_contents(ROOT.'/config/routes.json'), true);
+        $routes = self::$routes;
         if (!isset($routes[$name]['routes'][$lang]))
             return '/';
         $url = str_replace('?', '', $routes[$name]['routes'][$lang]);

@@ -16,4 +16,3 @@ require_once ROOT . '/scripts/tools/detect-site.php';
 require_once ROOT . '/scripts/tools/debug.php';
 require_once ROOT . '/scripts/tools/start-session.php';
 require_once ROOT . '/scripts/tools/load-conf.php';
-require_once ROOT . '/scripts/tools/i18n.php';

@@ -20,6 +20,13 @@ $route = Argv::route($argv, Argv::$routes);
 if (isset($route['route']))
     Conf::set('route', $route['route']);
 
+/**
+ * Setting the language according to route
+ */
+if (isset($route['lang']))
+    $_GET['lang'] = $route['lang'];
+\Core\i18n::init();
+
 if (!$route) {
     $route = [
         'controller' => 'SystemController@redirect',
