@@ -7,13 +7,11 @@
  */
 
 namespace                               Core {
-
     /**
      * Class i18n
      * @package Core
      */
-    class                                   i18n
-    {
+    class                                   i18n {
         /** @var array $translations Contain the translations */
         private static $translations = [];
 
@@ -24,32 +22,61 @@ namespace                               Core {
         public static $acceptedLanguages = ['fr_FR'];
 
         public static function init() {
+            self::$translations = json_decode(file_get_contents(ROOT . '/config/i18n.json'), true);
             self::$acceptedLanguages = Site::get('i18n.languages');
             self::$defaultLanguage = Site::get('i18n.default');
 
-            if (false) {
-                /**
-                 * TODO: We must create Auth system before testing, here, if the user is logged, to get his language preference
-                 */
+            $user = false;
+
+            if (Auth::logged()) {
+                $user = Auth::user();
+                $user->updateSessionWithThisUser();
+            }
+
+            if (isset($_GET['setLang'])) {
+                $redirect = '/';
+                if (isset($_GET['redirect']))
+                    $redirect = $_GET['redirect'];
+
+                $lang = $_GET['setLang'];
+                if (!in_array($lang, self::$acceptedLanguages))
+                    $lang = self::$defaultLanguage;
+
+                Conf::set('lang', $lang);
+                Session::set('lang', $lang);
+                if ($user) {
+                    $user->set('lang', $lang);
+                    $user->save();
+                }
+
+                Redirect::http($redirect);
+            }
+
+            if (Session::get('lang', false)) {
+                $lang = Session::get('lang', false);
+                if (!in_array($lang, self::$acceptedLanguages)) {
+                    $lang = self::$defaultLanguage;
+                    Session::set('lang', $lang);
+                    if ($user) {
+                        $user->set('lang', $lang);
+                        $user->save();
+                    }
+                }
+                Conf::set('lang', $lang);
             } else {
-                if (Session::get('lang', false)) {
-                    $lang = Session::get('lang', false);
-                    if (!in_array($lang, self::$acceptedLanguages)) {
-                        $lang = self::$defaultLanguage;
-                        Session::set('lang', $lang);
+                if (isset($_GET['lang']) && in_array($_GET['lang'], self::$acceptedLanguages)) {
+                    Conf::set('lang', $_GET['lang']);
+                    Session::set('lang', $_GET['lang']);
+                    if ($user) {
+                        $user->set('lang', $_GET['lang']);
+                        $user->save();
                     }
-                    Conf::set('lang', $lang);
                 } else {
-                    if (isset($_GET['lang']) && in_array($_GET['lang'], self::$acceptedLanguages)) {
-                        Conf::set('lang', $_GET['lang']);
-                        Session::set('lang', $_GET['lang']);
-                    } else {
-                        $lang = self::findBestLanguage(
-                            isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : self::$defaultLanguage
-                        );
-                        Conf::set('lang', $lang);
-                        Session::set('lang', $lang);
-                    }
+                    $lang = self::findBestLanguage(
+                        isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : self::$defaultLanguage
+                    );
+                    Conf::set('lang', $lang);
+                    Session::set('lang', $lang);
                 }
             }
         }
