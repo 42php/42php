@@ -1,1 +1,1 @@
-@php ../scripts/phar/phpunit-5.7.19.phar --bootstrap ./init-tests.php ./
+@php ../scripts/phar/phpunit-6.2.2.phar --bootstrap ./init-tests.php ./
