@@ -7,6 +7,24 @@
       "42php.lan"
     ]
   },
+  "page": {
+    "title": "42php.lan : best framework ever",
+    "description": "",
+    "keywords": "",
+    "robots": "noindex, nofollow",
+    "favicon": "",
+    "share": {
+      "image": "",
+      "twitter": {
+        "username": ""
+      }
+    },
+    "googleAnalytics": "",
+    "js": [],
+    "css": [],
+    "meta": [],
+    "bottom": []
+  },
   "auth": {
     "allowRegister": true
   },

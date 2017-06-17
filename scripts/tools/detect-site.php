@@ -7,6 +7,7 @@
  */
 
 use Core\Argv;
+use Core\Conf;
 use Core\Redirect;
 use Core\Site;
 use Core\Http;
@@ -31,3 +32,13 @@ if ($_SERVER['SERVER_NAME'] != Site::get('domain.main')) {
 }
 
 Argv::loadSiteRoutes(Site::get('routes', []));
+
+/**
+ * Merge page base data
+ */
+foreach (Site::get('page', []) as $k => $v) {
+    if (is_array($v))
+        Conf::set('page.' . $k, array_merge(Conf::get('page.' . $k, []), $v));
+    else
+        Conf::set('page.' . $k, $v);
+}

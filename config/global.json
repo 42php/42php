@@ -2,5 +2,25 @@
   "argv": {
     "offset": 0,
     "base": ""
+  },
+  "page": {
+    "title": "",
+    "description": "",
+    "keywords": "",
+    "robots": "noindex, nofollow",
+    "favicon": "",
+    "share": {
+      "image": "",
+      "twitter": {
+        "username": ""
+      }
+    },
+    "googleAnalytics": "",
+    "js": [
+      "/"
+    ],
+    "css": [],
+    "meta": [],
+    "bottom": []
   }
 }
