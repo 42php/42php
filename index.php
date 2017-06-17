@@ -30,7 +30,7 @@ i18n::init();
 
 if (!$route) {
     $route = [
-        'controller' => 'SystemController@redirect',
+        'controller' => 'SystemController@notFound',
         'params' => ''
     ];
 }
