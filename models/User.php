@@ -21,6 +21,7 @@ class                           User {
         'firstname' => '',
         'lastname' => '',
         'registered' => null,
+        'updated' => null,
         'admin' => 0,
         'lang' => '',
         'photo' => '',
@@ -34,8 +35,15 @@ class                           User {
         'phone' => '',
         'mobile' => '',
         'website' => '',
-        'birthday' => ''
+        'birthday' => '0000-00-00'
     ];
+
+    public function             beforeSave() {
+        if (is_null($this->get('registered', null))) {
+            $this->set('registered', \Core\Db::date(false, true));
+        }
+        $this->set('updated', \Core\Db::date(false, true));
+    }
 
     public function             onExport($data) {
         unset($data['password']);
