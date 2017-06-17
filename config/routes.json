@@ -35,6 +35,7 @@
   },
   "api": {
     "controller": "ApiController@process",
+    "base": true,
     "routes": {
       "fr-FR": "/api/*",
       "en-US": "/api/*"
@@ -42,6 +43,7 @@
   },
   "admin": {
     "controller": "AdminController@display",
+    "base": true,
     "routes": {
       "fr_FR": "/admin"
     }

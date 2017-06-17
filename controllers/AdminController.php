@@ -11,6 +11,6 @@
  */
 class                   AdminController extends \Core\Controller {
     public function     display() {
-
+        return "ok";
     }
 }

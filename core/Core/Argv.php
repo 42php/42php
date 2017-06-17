@@ -49,12 +49,13 @@ class 							Argv {
     /**
      * Tests if the route matches supplied URL.
      *
-     * @param string $url      URL
-     * @param string $route    Route
+     * @param string $url       URL
+     * @param string $route     Route
+     * @param bool $base        Determine if the route is just the base or the full URL
      *
-     * @return array           Result
+     * @return array            Result
      */
-    private static function 	routeMatch($url, $route) {
+    private static function 	routeMatch($url, $route, $base = false) {
         $tmp = array();
         preg_match_all('/(\{[a-z0-9\-\_]+\})/i', $route, $matches);
         foreach ($matches[0] as $k)
@@ -106,7 +107,7 @@ class 							Argv {
             foreach ($r['routes'] as $lang => $route) {
                 if (substr($route, -1) != '/')
                     $route .= '/';
-                $res = self::routeMatch($url, $route);
+                $res = self::routeMatch($url, $route, isset($r['base']) && $r['base']);
                 if ($res['match']) {
                     $potentialOffset = sizeof(self::parse($route)) - $res['offset'];
                     if ($potentialOffset > $offset) {
