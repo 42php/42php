@@ -7,6 +7,9 @@
       "42php.lan"
     ]
   },
+  "auth": {
+    "allowRegister": true
+  },
   "debug": true,
   "i18n": {
     "languages": [

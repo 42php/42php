@@ -58,4 +58,8 @@ class                           User {
         $userData = $this->export();
         \Core\Session::set('user', $userData);
     }
+
+    public function             setPassword($newPassword) {
+        $this->set('password', Hash::blowfish($newPassword));
+    }
 }

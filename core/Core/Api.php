@@ -248,6 +248,7 @@ class                               Api {
             ], $e->getCode());
         }
     }
+
     /**
      * Execute API locally
      *

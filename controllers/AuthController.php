@@ -6,6 +6,9 @@
  * @copyright   2015-2017 42php
  */
 
+/**
+ * Class AuthController
+ */
 class                   AuthController extends \Core\Controller {
     public function     login() {
 

@@ -26,5 +26,12 @@
       "fr_FR": "/inscription",
       "en_US": "/register"
     }
+  },
+  "api": {
+    "controller": "ApiController@process",
+    "routes": {
+      "fr-FR": "/api/*",
+      "en-US": "/api/*"
+    }
   }
 }
