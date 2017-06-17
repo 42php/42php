@@ -49,6 +49,10 @@ class                           Site {
         file_put_contents(ROOT . '/config/domains.json', json_encode($domains, JSON_PRETTY_PRINT));
     }
 
+    public static function      save() {
+        file_put_contents(ROOT . '/config/sites/' . self::get('slug') . '.json', json_encode(self::$__data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+    }
+
     public static function      create($name, $domain) {
         $baseslug = Text::slug($name);
         $suffix = false;

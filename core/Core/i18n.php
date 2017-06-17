@@ -11,8 +11,7 @@ namespace                               Core {
      * Class i18n
      * @package Core
      */
-    class                                   i18n
-    {
+    class                                   i18n {
         /** @var array $translations Contain the translations */
         private static $translations = [];
 
@@ -22,8 +21,7 @@ namespace                               Core {
         /** @var array $acceptedLanguages Langues disponibles */
         public static $acceptedLanguages = ['fr_FR'];
 
-        public static function init()
-        {
+        public static function init() {
             self::$translations = Site::get('i18n.translations', []);
             self::$acceptedLanguages = Site::get('i18n.languages', ['fr_FR']);
             self::$defaultLanguage = Site::get('i18n.default', 'fr_FR');
@@ -91,8 +89,7 @@ namespace                               Core {
          * @param string $langs $_SERVER['HTTP_ACCEPT_LANGUAGE']
          * @return string                   Best language
          */
-        public static function findBestLanguage($langs)
-        {
+        public static function findBestLanguage($langs) {
             $langs = explode(',', $langs);
             foreach ($langs as $lang) {
                 $lang = str_replace('-', '_', explode(';', $lang)[0]);
@@ -107,14 +104,17 @@ namespace                               Core {
             return self::$defaultLanguage;
         }
 
-        public static function setLang($lang)
-        {
-            // TODO
-        }
-
-        public static function get($k, $p = [])
-        {
-            // TODO
+        public static function get($k, $p = []) {
+            if (!isset(self::$translations[$k])) {
+                $o = [];
+                foreach (self::$acceptedLanguages as $l)
+                    $o[$l] = false;
+                self::$translations[$k] = $o;
+                Site::set('i18n.translations.' . $k, $o);
+                Site::save();
+            }
+            $str = isset(self::$translations[$k][Conf::get('lang')]) && self::$translations[$k][Conf::get('lang')] !== false ? self::$translations[$k][Conf::get('lang')] : $k;
+            return vsprintf($str, $p);
         }
     }
 }
