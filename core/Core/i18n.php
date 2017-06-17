@@ -23,10 +23,9 @@ namespace                               Core {
         /** @var array $acceptedLanguages Langues disponibles */
         public static $acceptedLanguages = ['fr_FR'];
 
-        public static function init()
-        {
-            self::$acceptedLanguages = Conf::get('i18n.languages');
-            self::$defaultLanguage = Conf::get('i18n.default');
+        public static function init() {
+            self::$acceptedLanguages = Site::get('i18n.languages');
+            self::$defaultLanguage = Site::get('i18n.default');
 
             if (false) {
                 /**
@@ -61,8 +60,7 @@ namespace                               Core {
          * @param string $langs $_SERVER['HTTP_ACCEPT_LANGUAGE']
          * @return string                   Best language
          */
-        public static function findBestLanguage($langs)
-        {
+        public static function findBestLanguage($langs) {
             $langs = explode(',', $langs);
             foreach ($langs as $lang) {
                 $lang = str_replace('-', '_', explode(';', $lang)[0]);
@@ -77,13 +75,11 @@ namespace                               Core {
             return self::$defaultLanguage;
         }
 
-        public static function setLang($lang)
-        {
+        public static function setLang($lang) {
             // TODO
         }
 
-        public static function get($k, $p = [])
-        {
+        public static function get($k, $p = []) {
             // TODO
         }
     }

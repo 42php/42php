@@ -2,9 +2,9 @@
   "name": "Localhost",
   "slug": "localhost",
   "domain": {
-    "main": "42php.lan",
+    "main": "localhost",
     "alias": [
-      "localhost"
+      "42php.lan"
     ]
   },
   "debug": true,
