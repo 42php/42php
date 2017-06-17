@@ -1,0 +1,16 @@
+{
+  "login": {
+    "controller": "AuthController@login",
+    "routes": {
+      "fr_FR": "/connexion",
+      "en_US": "/login"
+    }
+  },
+  "logout": {
+    "controller": "AuthController@logout",
+    "routes": {
+      "fr_FR": "/deconnexion",
+      "en_US": "/logout"
+    }
+  }
+}

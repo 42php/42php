@@ -15,6 +15,16 @@ namespace                       Core;
  * @package Core
  */
 class 							Argv {
+    public static               $routes = [];
+
+    public static function      init() {
+        self::$routes = json_decode(file_get_contents(ROOT . '/config/routes.json'), true);
+    }
+
+    public static function      loadSiteRoutes($routes = []) {
+        self::$routes = array_merge(self::$routes, $routes);
+    }
+
     /**
      * Read URL to extract parameters.
      *

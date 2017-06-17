@@ -6,6 +6,7 @@
  * @copyright   2015-2017 42php
  */
 
+use Core\Argv;
 use Core\Redirect;
 use Core\Site;
 use Core\Http;
@@ -28,3 +29,5 @@ if ($_SERVER['SERVER_NAME'] != Site::get('domain.main')) {
     $url .= $_SERVER['REQUEST_URI'];
     Redirect::permanent($url);
 }
+
+Argv::loadSiteRoutes(Site::get('routes', []));
