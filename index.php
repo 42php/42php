@@ -36,5 +36,3 @@ if (!$route) {
 }
 
 echo Controller::run($route['controller'], $route['params']);
-
-echo Conf::get('lang');
