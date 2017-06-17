@@ -11,7 +11,8 @@ namespace                               Core {
      * Class i18n
      * @package Core
      */
-    class                                   i18n {
+    class                                   i18n
+    {
         /** @var array $translations Contain the translations */
         private static $translations = [];
 
@@ -21,7 +22,8 @@ namespace                               Core {
         /** @var array $acceptedLanguages Langues disponibles */
         public static $acceptedLanguages = ['fr_FR'];
 
-        public static function init() {
+        public static function init()
+        {
             self::$translations = Site::get('i18n.translations', []);
             self::$acceptedLanguages = Site::get('i18n.languages', ['fr_FR']);
             self::$defaultLanguage = Site::get('i18n.default', 'fr_FR');
@@ -34,10 +36,6 @@ namespace                               Core {
             }
 
             if (isset($_GET['setLang'])) {
-                $redirect = '/';
-                if (isset($_GET['redirect']))
-                    $redirect = $_GET['redirect'];
-
                 $lang = $_GET['setLang'];
                 if (!in_array($lang, self::$acceptedLanguages))
                     $lang = self::$defaultLanguage;
@@ -49,7 +47,18 @@ namespace                               Core {
                     $user->save();
                 }
 
+                $redirect = Argv::createUrl(Conf::get('route.name'), Conf::get('route.params'));
+
                 Redirect::http($redirect);
+            }
+
+            if (isset($_GET['lang']) && in_array($_GET['lang'], self::$acceptedLanguages)) {
+                Conf::set('lang', $_GET['lang']);
+                Session::set('lang', $_GET['lang']);
+                if ($user) {
+                    $user->set('lang', $_GET['lang']);
+                    $user->save();
+                }
             }
 
             if (Session::get('lang', false)) {
@@ -64,19 +73,14 @@ namespace                               Core {
                 }
                 Conf::set('lang', $lang);
             } else {
-                if (isset($_GET['lang']) && in_array($_GET['lang'], self::$acceptedLanguages)) {
-                    Conf::set('lang', $_GET['lang']);
-                    Session::set('lang', $_GET['lang']);
-                    if ($user) {
-                        $user->set('lang', $_GET['lang']);
-                        $user->save();
-                    }
-                } else {
-                    $lang = self::findBestLanguage(
-                        isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : self::$defaultLanguage
-                    );
-                    Conf::set('lang', $lang);
-                    Session::set('lang', $lang);
+                $lang = self::findBestLanguage(
+                    isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : self::$defaultLanguage
+                );
+                Conf::set('lang', $lang);
+                Session::set('lang', $lang);
+                if ($user) {
+                    $user->set('lang', $lang);
+                    $user->save();
                 }
             }
         }
@@ -87,7 +91,8 @@ namespace                               Core {
          * @param string $langs $_SERVER['HTTP_ACCEPT_LANGUAGE']
          * @return string                   Best language
          */
-        public static function findBestLanguage($langs) {
+        public static function findBestLanguage($langs)
+        {
             $langs = explode(',', $langs);
             foreach ($langs as $lang) {
                 $lang = str_replace('-', '_', explode(';', $lang)[0]);
@@ -102,11 +107,13 @@ namespace                               Core {
             return self::$defaultLanguage;
         }
 
-        public static function setLang($lang) {
+        public static function setLang($lang)
+        {
             // TODO
         }
 
-        public static function get($k, $p = []) {
+        public static function get($k, $p = [])
+        {
             // TODO
         }
     }

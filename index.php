@@ -9,6 +9,7 @@
 use Core\Argv;
 use Core\Conf;
 use Core\Controller;
+use Core\i18n;
 
 require_once 'scripts/init.php';
 
@@ -25,7 +26,7 @@ if (isset($route['route']))
  */
 if (isset($route['lang']))
     $_GET['lang'] = $route['lang'];
-\Core\i18n::init();
+i18n::init();
 
 if (!$route) {
     $route = [
@@ -35,3 +36,5 @@ if (!$route) {
 }
 
 echo Controller::run($route['controller'], $route['params']);
+
+echo Conf::get('lang');

@@ -147,6 +147,6 @@ class 							Argv {
         $url = str_replace('?', '', $routes[$name]['routes'][$lang]);
         foreach ($params as $k => $v)
             $url = str_replace('{'.$k.'}', $v, $url);
-        return $url;
+        return Conf::get('argv.base', '') . $url;
     }
 }

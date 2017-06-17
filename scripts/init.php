@@ -9,8 +9,8 @@
 define('ROOT', realpath(__DIR__.'/../'));
 
 require_once ROOT . '/scripts/tools/disable-buffer.php';
-require_once ROOT . '/scripts/tools/reset-env.php';
 require_once ROOT . '/scripts/tools/autoload.php';
+require_once ROOT . '/scripts/tools/reset-env.php';
 require_once ROOT . '/scripts/tools/routing.php';
 require_once ROOT . '/scripts/tools/detect-site.php';
 require_once ROOT . '/scripts/tools/debug.php';
