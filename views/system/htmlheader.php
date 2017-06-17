@@ -34,7 +34,7 @@
     <?php
     // alternate links for multilingual
     if (\Core\Conf::get('route') !== false) {
-        foreach (\Core\i18n::$__acceptedLanguages as $l) {
+        foreach (\Core\i18n::$acceptedLanguages as $l) {
             $url = \Core\Argv::createUrl(\Core\Conf::get('route.name'), \Core\Conf::get('route.params'), $l);
             echo '<link rel="alternate" hreflang="'.$l.'" href="http://'.$_SERVER['HTTP_HOST'].$url.'" />'."\n";
         }
