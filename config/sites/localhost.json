@@ -1,72 +1,77 @@
 {
-  "name": "Localhost",
-  "slug": "localhost",
-  "domain": {
-    "main": "localhost",
-    "alias": [
-      "42php.lan"
-    ]
-  },
-  "ssl": {
-    "force": false
-  },
-  "page": {
-    "title": "42php.lan : best framework ever",
-    "description": "",
-    "keywords": "",
-    "robots": "noindex, nofollow",
-    "favicon": "/images/favicon/favicon.ico",
-    "share": {
-      "image": "",
-      "twitter": {
-        "username": ""
-      }
+    "name": "Localhost",
+    "slug": "localhost",
+    "domain": {
+        "main": "localhost",
+        "alias": [
+            "42php.lan"
+        ]
     },
-    "googleAnalytics": "",
-    "js": [],
-    "css": [],
-    "meta": [],
-    "bottom": []
-  },
-  "auth": {
-    "allowRegister": true
-  },
-  "debug": true,
-  "i18n": {
-    "languages": [
-      "fr_FR",
-      "en_US"
+    "ssl": {
+        "force": false
+    },
+    "page": {
+        "title": "42php.lan : best framework ever",
+        "description": "",
+        "keywords": "",
+        "robots": "noindex, nofollow",
+        "favicon": "\/images\/favicon\/favicon.ico",
+        "share": {
+            "image": "",
+            "twitter": {
+                "username": ""
+            }
+        },
+        "googleAnalytics": "",
+        "js": [],
+        "css": [],
+        "meta": [],
+        "bottom": []
+    },
+    "auth": {
+        "allowRegister": true
+    },
+    "debug": true,
+    "i18n": {
+        "languages": [
+            "fr_FR",
+            "en_US"
+        ],
+        "default": "fr_FR",
+        "translations": {
+            "Panneau d'administration": {
+                "fr_FR": false,
+                "en_US": false
+            }
+        }
+    },
+    "database": {
+        "type": "PDO",
+        "config": {
+            "dsn": "mysql:host=localhost;dbname=42php",
+            "user": "root",
+            "pass": "",
+            "prefix": ""
+        }
+    },
+    "payment": {
+        "aLabel": {
+            "driver": "MangoPay",
+            "config": {
+                "apikey": "testtest"
+            }
+        }
+    },
+    "mail": [
+        {
+            "driver": "Sendinblue",
+            "config": {
+                "apikey": "testtest"
+            }
+        },
+        {
+            "driver": "System"
+        }
     ],
-    "default": "fr_FR",
-    "translations": {}
-  },
-  "database": {
-    "type": "PDO",
-    "config": {
-      "dsn": "mysql:host=localhost;dbname=42php",
-      "user": "root",
-      "pass": "",
-      "prefix": ""
-    }
-  },
-  "payment": {
-    "aLabel": {
-      "driver": "MangoPay",
-      "config": {
-        "apikey": "testtest"
-      }
-    }
-  },
-  "mail": [
-    {
-      "driver": "Sendinblue",
-      "config": {
-        "apikey": "testtest"
-      }
-    },
-    {
-      "driver": "System"
-    }
-  ],
-  "routes": {}
+    "routes": []
 }
