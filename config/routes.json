@@ -39,5 +39,11 @@
       "fr-FR": "/api/*",
       "en-US": "/api/*"
     }
+  },
+  "admin": {
+    "controller": "AdminController@display",
+    "routes": {
+      "fr_FR": "/admin"
+    }
   }
 }
