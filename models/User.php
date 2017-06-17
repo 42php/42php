@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @author      Guillaume Gagnaire <contact@42php.com>
  * @link        https://www.github.com/42php/42php
@@ -7,6 +6,7 @@
  * @copyright   2015-2017 42php
  */
 
+use Core\Hash;
 use Core\Model;
 
 class                           User {
@@ -36,4 +36,26 @@ class                           User {
         'website' => '',
         'birthday' => ''
     ];
+
+    public function             onExport($data) {
+        unset($data['password']);
+        return $data;
+    }
+
+    public static function      login($email, $password) {
+        $user = self::findOne(['email' => $email]);
+        if (!$user)
+            return false;
+        if (!Hash::same($password, $user->get('password')))
+            return false;
+
+        $user->updateSessionWithThisUser();
+
+        return true;
+    }
+
+    public function             updateSessionWithThisUser() {
+        $userData = $this->export();
+        \Core\Session::set('user', $userData);
+    }
 }
