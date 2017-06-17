@@ -22,9 +22,9 @@ namespace                               Core {
         public static $acceptedLanguages = ['fr_FR'];
 
         public static function init() {
-            self::$translations = json_decode(file_get_contents(ROOT . '/config/i18n.json'), true);
-            self::$acceptedLanguages = Site::get('i18n.languages');
-            self::$defaultLanguage = Site::get('i18n.default');
+            self::$translations = Site::get('i18n.translations', []);
+            self::$acceptedLanguages = Site::get('i18n.languages', ['fr_FR']);
+            self::$defaultLanguage = Site::get('i18n.default', 'fr_FR');
 
             $user = false;
 

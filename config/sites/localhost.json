@@ -13,7 +13,8 @@
       "fr_FR",
       "en_US"
     ],
-    "default": "fr_FR"
+    "default": "fr_FR",
+    "translations": {}
   },
   "database": {
     "type": "PDO",
