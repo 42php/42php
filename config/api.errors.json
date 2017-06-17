@@ -1,0 +1,13 @@
+{
+  "200": "OK",
+  "201": "Ressource created",
+  "204": "Ressource deleted",
+  "400": "Parameters are missing",
+  "401": "You must be logged to use this ressource",
+  "403": "You cannot access to this ressource",
+  "404": "Requested ressource does not exists",
+  "405": "Method not implemented",
+  "409": "A conflict with another ressource happened",
+  "421": "Misdirected request",
+  "500": "Server error"
+}

@@ -197,8 +197,9 @@ class                               Api {
             die();
         }
 
-        $allowed = false;
+        $allowed = true;
         if (isset($headers['X-App-Key'])) {
+            $allowed = false;
             header('Access-Control-Allow-Origin: *');
 
             $app = Db::getInstance()->apikeys->findOne([
