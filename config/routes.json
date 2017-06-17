@@ -37,8 +37,8 @@
     "controller": "ApiController@process",
     "base": true,
     "routes": {
-      "fr-FR": "/api/*",
-      "en-US": "/api/*"
+      "fr-FR": "/api",
+      "en-US": "/api"
     }
   },
   "admin": {

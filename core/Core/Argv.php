@@ -54,35 +54,54 @@ class 							Argv {
      * @param bool $base        Determine if the route is just the base or the full URL
      *
      * @return array            Result
+     * @throws ArgvException
      */
     private static function 	routeMatch($url, $route, $base = false) {
-        $tmp = array();
-        preg_match_all('/(\{[a-z0-9\-\_]+\})/i', $route, $matches);
-        foreach ($matches[0] as $k)
-            $tmp[] = [substr($k, 1, strlen($k) - 2), ''];
+        $parsed_url = self::parse($url);
+        $parsed_route = self::parse($route);
 
-        $originalRoute = $route;
+        $params = [];
+        $lastVariableIsOptional = false;
 
-        if (strstr($originalRoute, '*') !== false) {
-            if (fnmatch($originalRoute, $url))
-                return ['match' => true, 'params' => [], 'offset' => 0 ];
-            return ['match' => false, 'params' => [], 'offset' => 0 ];
+        while (sizeof($parsed_url)) {
+            $u = array_shift($parsed_url);
+            $r = array_shift($parsed_route);
+
+            if (is_null($r)) {
+                if ($base) {
+                    return ['match' => true, 'params' => $params, 'offset' => $lastVariableIsOptional ? 1 : 0];
+                }
+                return ['match' => false, 'params' => [], 'offset' => 0];
+            }
+
+            if ($r[0] == ':') {
+                if (substr($r, -1) == '?') {
+                    if (sizeof($parsed_route))
+                        throw new ArgvException("Route can only have optionnal parameter at the end.");
+                    $r = substr($r, 0, strlen($r) - 1);
+                    $lastVariableIsOptional = true;
+                }
+                $r = substr($r, 1);
+                $params[$r] = $u;
+            } elseif ($r != '*' && $r != $u) {
+                return ['match' => false, 'params' => [], 'offset' => 0];
+            }
         }
 
-        $route = preg_replace('/(\{[a-z0-9\-\_]+\}\?)/i', '([\w\.\-\_]*)', $route);
-        $route = preg_replace('/(\{[a-z0-9\-\_]+\})/i', '([\w\.\-\_]+)', $route);
-        $route = str_replace('/', '\/', $route);
-        $route = '/^'.$route.'?$/i';
-        $res = preg_match_all($route, $url, $matches);
-        for ($i = 1; $i < sizeof($matches); $i++)
-            if (isset($matches[$i][0]))
-                $tmp[$i - 1][1] = $matches[$i][0];
+        if (sizeof($parsed_route)) {
+            if (sizeof($parsed_route) > 1)
+                return ['match' => false, 'params' => [], 'offset' => 0];
 
-        $params = array();
-        foreach ($tmp as $t)
-            $params[$t[0]] = $t[1];
+            $r = $parsed_route[0];
+            if ($r[0] == ':' && substr($r[0], -1) == '?') {
+                $r = substr($r, 1, strlen($r) - 2);
+                $params[$r] = false;
+                $lastVariableIsOptional = true;
+                return ['match' => true, 'params' => $params, 'offset' => $lastVariableIsOptional ? 1 : 0];
+            }
+        }
 
-        return ['match' => $res ? true : false, 'params' => $params, 'offset' => substr($originalRoute, -2) == '?/' ? 1 : 0 ];
+        return ['match' => true, 'params' => $params, 'offset' => $lastVariableIsOptional ? 1 : 0];
     }
 
     /**
@@ -108,6 +127,7 @@ class 							Argv {
                 if (substr($route, -1) != '/')
                     $route .= '/';
                 $res = self::routeMatch($url, $route, isset($r['base']) && $r['base']);
+
                 if ($res['match']) {
                     $potentialOffset = sizeof(self::parse($route)) - $res['offset'];
                     if ($potentialOffset > $offset) {
