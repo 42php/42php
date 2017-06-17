@@ -1,4 +1,10 @@
 {
+  "favicon": {
+    "controller": "SystemController@favicon",
+    "routes": {
+      "fr_FR": "/favicon.ico"
+    }
+  },
   "login": {
     "controller": "AuthController@login",
     "routes": {

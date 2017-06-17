@@ -17,4 +17,13 @@ class                                   SystemController extends \Core\Controlle
         \Core\Http::responseCode(404);
         return '';
     }
+
+    /**
+     * Displays favicon
+     */
+    public function                     favicon() {
+        $path = ROOT . \Core\Site::get('page.favicon');
+        header("Content-Type: " . mime_content_type($path));
+        return file_get_contents($path);
+    }
 }
