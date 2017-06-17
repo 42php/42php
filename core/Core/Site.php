@@ -48,4 +48,74 @@ class                           Site {
 
         file_put_contents(ROOT . '/config/domains.json', json_encode($domains, JSON_PRETTY_PRINT));
     }
+
+    public static function      create($name, $domain) {
+        $baseslug = Text::slug($name);
+        $suffix = false;
+        $ok = false;
+        $slug = '';
+        while (!$ok) {
+            $slug = $baseslug . ($suffix ? '-' . $suffix : '');
+            if (!file_exists(ROOT . '/config/sites/' . $slug . '.json'))
+                $ok = true;
+            else {
+                if (!$suffix)
+                    $suffix = 0;
+                ++$suffix;
+            }
+        }
+
+        $document = [
+            "setup" => true,
+            "name" => $name,
+            "slug" => $slug,
+            "domain" => [
+                "main" => $domain,
+                "alias" => []
+            ],
+            "ssl" => [
+                "force" => false
+            ],
+            "page" => [
+                "title" => "$name : powered by 42php",
+                "description" => "",
+                "keywords" => "",
+                "robots" => "noindex, nofollow",
+                "favicon" => "/images/favicon/favicon.ico",
+                "share" => [
+                    "image" => "",
+                    "twitter" => [
+                        "username" => ""
+                    ]
+                ],
+                "googleAnalytics" => "",
+                "js" => [],
+                "css" => [],
+                "meta" => [],
+                "bottom" => []
+            ],
+            "auth" => [
+                "allowRegister" => true
+            ],
+            "debug" => true,
+            "i18n" => [
+                "languages" => [
+                    "fr_FR"
+                ],
+                "default" => "fr_FR",
+                "translations" => []
+            ],
+            "database" => [],
+            "payment" => [],
+            "mail" => [
+                "driver" => "System",
+                "config" => []
+            ],
+            "routes" => []
+        ];
+
+        file_put_contents(ROOT . '/config/sites/' . $slug . '.json', json_encode($document, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+
+        return true;
+    }
 }
