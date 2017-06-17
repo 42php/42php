@@ -31,6 +31,14 @@ if ($_SERVER['SERVER_NAME'] != Site::get('domain.main')) {
     Redirect::permanent($url);
 }
 
+if (Site::get('ssl.force', false) && substr(Http::baseUrl(), 0, 8) != 'https://') {
+    $url = Http::baseUrl();
+    $url = str_replace($_SERVER['SERVER_NAME'], Site::get('domain.main'), $url);
+    $url .= $_SERVER['REQUEST_URI'];
+    $url = 'https://' . substr($url, 7);
+    Redirect::permanent($url);
+}
+
 Argv::loadSiteRoutes(Site::get('routes', []));
 
 /**

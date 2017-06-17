@@ -7,6 +7,9 @@
       "42php.lan"
     ]
   },
+  "ssl": {
+    "force": false
+  },
   "page": {
     "title": "42php.lan : best framework ever",
     "description": "",
