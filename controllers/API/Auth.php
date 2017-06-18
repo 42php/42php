@@ -16,6 +16,10 @@ use Core\Api,
  */
 trait                   Api_Auth {
     public function     auth() {
+        Api::get('/me', function() {
+            return Session::get('user', false);
+        });
+
         Api::post('/session', function() {
             Api::needFields(['email', 'password']);
 
