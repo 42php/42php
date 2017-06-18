@@ -36,6 +36,7 @@ class                   AdminController extends \Core\Controller {
         /**
          * App
          */
+        Conf::append('page.css', '/css/admin/main.min.css');
         Conf::append('page.js', '/js/admin/app.min.js');
 
         return View::render('admin/app');
