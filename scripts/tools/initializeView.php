@@ -6,7 +6,6 @@
  * @copyright   2015-2017 42php
  */
 
-use Core\Auth;
 use Core\Conf;
 use Core\Session;
 
