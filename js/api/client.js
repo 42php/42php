@@ -30,7 +30,7 @@
 
     var basePath = '/api';
     var token = '';
-    var lang = 'fr-FR';
+    var lang = 'fr_FR';
 
     var throwError = function(code, message) {
         console.log('[API][' + code + '] ' + message);
