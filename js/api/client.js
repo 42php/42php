@@ -137,9 +137,9 @@
                 if (t)
                     client.setToken(t);
 
-                if (callbacks.hasOwnProperty(code)) {
+                if (callbacks.hasOwnProperty(code) && callbacks[code]) {
                     callbacks[code](ret);
-                } else if (callbacks.hasOwnProperty('any')) {
+                } else if (callbacks.hasOwnProperty('any') && callbacks.any) {
                     callbacks.any(ret);
                 }
             });
