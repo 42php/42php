@@ -28,6 +28,8 @@ if (isset($route['lang']))
     $_GET['lang'] = $route['lang'];
 i18n::init();
 
+require_once ROOT . '/scripts/tools/initializeView.php';
+
 if (!$route) {
     $route = [
         'controller' => 'SystemController@notFound',
