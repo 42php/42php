@@ -1,5 +1,3 @@
-Vue.use(VueMaterial);
-
 var store = {
     state: {
         user: {data: null},

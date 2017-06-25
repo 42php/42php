@@ -25,13 +25,12 @@ class                   AdminController extends \Core\Controller {
         /**
          * Vue2 JS
          */
-        Conf::append('page.js', 'https://unpkg.com/vue@2.3.4');
+        Conf::append('page.js', 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js');
 
         /**
-         * Vue Material
+         * Bulma CSS
          */
-        Conf::append('page.js', 'https://unpkg.com/vue-material@0.7.1');
-        Conf::append('page.css', 'https://unpkg.com/vue-material@0.7.1/dist/vue-material.css');
+        Conf::append('page.css', 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.2/css/bulma.css');
 
         /**
          * App
